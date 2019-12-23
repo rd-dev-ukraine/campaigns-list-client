@@ -1,0 +1,39 @@
+.campaign-card {
+  .card-header-wrapper {
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    .title {
+      margin: 0;
+      color: black;
+      padding-bottom: 4px;
+    }
+  }
+  .actions-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+  .view-icon-wrapper {
+    display: flex;
+    align-items: center;
+    .value {
+      display: block;
+    }
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      background-image: url('../../assets/eye.svg');
+      display: block;
+      margin-left: 8px;
+      opacity: 0.4;
+    }
+  }
+
+  .link-btn {
+    width: 100%;
+    text-decoration: none;
+    color: #000;
+    display: block;
+  }
+}
