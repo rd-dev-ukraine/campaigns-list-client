@@ -57,4 +57,6 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
-console.log(process.env.REACT_APP_API_URL);
+
+
+console.log('API_URL', process.env.REACT_APP_API_URL);
