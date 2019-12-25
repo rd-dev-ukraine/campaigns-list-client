@@ -6,7 +6,11 @@ import TextField from "@material-ui/core/TextField";
 
 interface FormValues {
   title: string;
+  max_count: number;
+  max_count_per_user: number;
 }
+
+function handlerNumberInput(e: React.ChangeEvent<HTMLInputElement>) {}
 
 interface InputProps {
   campaignData?: ICampaign;
@@ -16,39 +20,79 @@ interface InputProps {
 
 type Props = InputProps & FormikProps<FormValues>;
 
-const Form = (props: Props) => {
-  return (
-    <form onSubmit={props.handleSubmit}>
-      <Grid container spacing={2} direction="column">
-        <Grid item>
-          <TextField
-            required
-            label="Campaign Name"
-            defaultValue={props.values["title"]}
-            name="title"
-            helperText={props.errors["title"]}
-            onChange={props.handleChange}
-          />
+class Form extends React.Component<Props> {
+  handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.target.value = !isNaN(Number(e.target.value))
+      ? Number(e.target.value)
+      : (e.target.value as any);
+    this.props.handleChange(e);
+  };
+
+  render() {
+    const {
+      values,
+      handleSubmit,
+      isSubmitting,
+    } = this.props;
+
+    return (
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2} direction="column">
+          <Grid item container direction="column">
+            <TextField
+              required
+              label="Campaign Name"
+              defaultValue={values["title"]}
+              name="title"
+              onChange={this.handleChange}
+            />
+            <TextField
+              required
+              label="Max views count"
+              defaultValue={values["max_count"]}
+              name="max_count"
+              onChange={this.handleChange}
+            />
+            <TextField
+              required
+              label="Max views per user"
+              defaultValue={values["max_count_per_user"]}
+              name="max_count_per_user"
+              type="number"
+              onChange={this.handleChange}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Submit
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={props.isSubmitting}
-          >
-            Submit
-          </Button>
-        </Grid>
-      </Grid>
-    </form>
-  );
-};
+      </form>
+    );
+  }
+}
 
 export const CampaignForm = withFormik<InputProps, FormValues>({
-  mapPropsToValues: (props) => ({
-    title: props.campaignData ? props.campaignData.title : ""
-  }),
+  mapPropsToValues: props => {
+    const { campaignData } = props;
+    if (campaignData) {
+      const { max_count, max_count_per_user, title } = campaignData;
+
+      return {
+        max_count,
+        max_count_per_user,
+        title
+      };
+    }
+
+    return {} as any;
+  },
   handleSubmit: (values, { props, setSubmitting }) => {
     setSubmitting(true);
     props.onSubmit(values);
