@@ -4,7 +4,7 @@ import { ICampaign } from "../../store/types";
 import { Button, Grid } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 
-interface FormValues {
+export interface ICampaignFormValues {
   title: string;
   max_count: number;
   max_count_per_user: number;
@@ -15,10 +15,10 @@ function handlerNumberInput(e: React.ChangeEvent<HTMLInputElement>) {}
 interface InputProps {
   campaignData?: ICampaign;
   isSubmiting?: boolean;
-  onSubmit: (values: FormValues) => void;
+  onSubmit: (values: ICampaignFormValues) => void;
 }
 
-type Props = InputProps & FormikProps<FormValues>;
+type Props = InputProps & FormikProps<ICampaignFormValues>;
 
 class Form extends React.Component<Props> {
   handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,7 +78,7 @@ class Form extends React.Component<Props> {
   }
 }
 
-export const CampaignForm = withFormik<InputProps, FormValues>({
+export const CampaignForm = withFormik<InputProps, ICampaignFormValues>({
   mapPropsToValues: props => {
     const { campaignData } = props;
     if (campaignData) {

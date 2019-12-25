@@ -23,9 +23,13 @@ export async function updateCampaignByIdRequest(
   return result.data;
 }
 
-export async function createCampaignRequest(campaignTitle: string) {
+export async function createCampaignRequest(payload: Partial<ICampaign>) {
+  const { title, max_count_per_user, max_count } = payload;
+
   const result = await request.post("/admin/campaign", {
-    title: campaignTitle
+    title,
+    max_count,
+    max_count_per_user
   });
 
   return result.data;

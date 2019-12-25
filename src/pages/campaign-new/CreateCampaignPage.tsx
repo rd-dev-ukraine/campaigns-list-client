@@ -9,8 +9,7 @@ interface FormValues {
 
 export class CreateCampaignPage extends React.Component<any> {
   handleSubmit = (values: FormValues) => {
-    const {title} = values;
-    createCampaignRequest(title);
+    createCampaignRequest(values);
   }
 
   render() {
