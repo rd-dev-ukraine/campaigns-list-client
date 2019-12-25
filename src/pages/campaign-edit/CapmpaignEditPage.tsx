@@ -4,25 +4,31 @@ import { RouteComponentProps } from "react-router";
 import { CampaignForm } from "../../components/CampaignForm";
 import { PageWithHeader } from "../../layouts/PageWithHeader";
 import { updateCampaignByIdRequest, getCampaignByIdRequest } from "../../store/admin-campaigns/requests";
+import { connect } from "react-redux";
+import { updateCampaignAction } from "../../store/admin-campaigns/actions";
 
-interface Props extends RouteComponentProps<{ id: string }> {
+type InputProps = RouteComponentProps<{id: string}>; 
+
+interface Props extends InputProps {
   campaignItem: ICampaign;
+  onSubmit: (formData: ICampaign) => void;
 }
 
 interface State {
   formData: ICampaign | null;
 }
 
-export class CampaignEditPage extends React.Component<Props, State> {
+class CampaignEditPageDumb extends React.Component<Props, State> {
   state: State = {
     formData: null,
   };
 
   handleSubmit = async (values: Partial<ICampaign>) => {
-    await updateCampaignByIdRequest(this.state.formData._id, {
+    const formData = {
       ...this.state.formData,
       ...values
-    });
+    };
+    this.props.onSubmit(formData);
   };
 
   componentDidMount() {
@@ -48,3 +54,10 @@ export class CampaignEditPage extends React.Component<Props, State> {
     );
   }
 }
+
+export const CampaignEditPage = connect(null, (dispatch, ownProps: InputProps) => {
+  const {id: campaignId} = ownProps.match.params;
+  return {
+    onSubmit: (formData: ICampaign) => dispatch(updateCampaignAction({id: campaignId, formData}))
+  }
+})(CampaignEditPageDumb)

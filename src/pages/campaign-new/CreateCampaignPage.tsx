@@ -1,15 +1,17 @@
 import * as React from "react";
 import { PageWithHeader } from "../../layouts/PageWithHeader";
-import { CampaignForm } from "../../components/CampaignForm";
+import { CampaignForm, ICampaignFormValues } from "../../components/CampaignForm";
 import { createCampaignRequest } from "../../store/admin-campaigns/requests";
+import { connect } from "react-redux";
+import { createCampaignAction } from "../../store/admin-campaigns/actions";
 
-interface FormValues {
-  title: string;
+interface Props {
+  onSubmit: (formData: ICampaignFormValues) => void;
 }
 
-export class CreateCampaignPage extends React.Component<any> {
-  handleSubmit = (values: FormValues) => {
-    createCampaignRequest(values);
+class CreateCampaignPageDumb extends React.Component<Props> {
+  handleSubmit = (values: ICampaignFormValues) => {
+    this.props.onSubmit(values);
   }
 
   render() {
@@ -20,3 +22,9 @@ export class CreateCampaignPage extends React.Component<any> {
     );
   }
 }
+
+export const CreateCampaignPage = connect(null , dispatch => {
+  return {
+    onSubmit: (formData: ICampaignFormValues) => dispatch(createCampaignAction({formData}))
+  }
+})(CreateCampaignPageDumb)

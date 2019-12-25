@@ -14,21 +14,26 @@ interface Props {
 
 class CampaignPageDumb extends React.Component<Props> {
   render() {
-    const {isLoading} = this.props;
+    const { isLoading } = this.props;
 
     return (
       <PageWithHeader title="Campaign List">
-        {isLoading ? <span>Loading list...</span>: <CampaignList items={this.props.items} />}
+        {isLoading ? (
+          <span>Loading list...</span>
+        ) : (
+          <CampaignList items={this.props.items} />
+        )}
+        {!isLoading && !this.props.items.length ? (
+          <span>No campaigns available.</span>
+        ) : null}
       </PageWithHeader>
     );
   }
 }
 
-export const CampaignPage = connect(
-  (store: IStore) => {
-    return {
-      items: getCampaignListItems(store),
-      isLoading: store.campaigns.loading
-    };
-  },
-)(CampaignPageDumb);
+export const CampaignPage = connect((store: IStore) => {
+  return {
+    items: getCampaignListItems(store),
+    isLoading: store.campaigns.loading
+  };
+})(CampaignPageDumb);

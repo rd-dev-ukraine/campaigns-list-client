@@ -10,8 +10,6 @@ export interface ICampaignFormValues {
   max_count_per_user: number;
 }
 
-function handlerNumberInput(e: React.ChangeEvent<HTMLInputElement>) {}
-
 interface InputProps {
   campaignData?: ICampaign;
   isSubmiting?: boolean;
